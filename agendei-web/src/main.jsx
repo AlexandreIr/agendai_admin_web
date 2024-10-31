@@ -1,9 +1,10 @@
-import { createRoot } from 'react-dom/client'
-import Login from './pages/login/login'
+import { createRoot } from 'react-dom/client';
+import './constants/globals.css';
+import Routering from './routering';
 
 
 createRoot(document.getElementById('root')).render(
   <>
-    <Login />
+    <Routering />
   </>
 )

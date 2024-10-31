@@ -10,7 +10,6 @@ export const Container = styled.div`
     padding-left: 1rem;
     overflow: hidden;
     @media( max-width: 650px ) {
-        justify-content: center;
         align-items: center;
         padding-left: 0;
         padding: 1rem;
@@ -35,10 +34,15 @@ export const Login = styled.div`
     >h2 {
         text-align: center;
     }
+    >div{
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+    }
 `
 
 export const Input = styled.input`
-    width: 20rem;
+    width: 100%;
     height: 2.5rem;
     border-radius: .5rem;
     border: none;
@@ -49,7 +53,7 @@ export const Input = styled.input`
 
 export const Button = styled.button`
     margin-top: 1rem;
-    width: 20rem;
+    width: 100%;
     height: 2.5rem;
     border-radius: .5rem;
     border: none;
