@@ -4,7 +4,8 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import * as Styled from './styles.js';
 import bg from '../../assets/fundo.png';
 import logo from '../../assets/logo.png';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../../constants/api.js";
 
 
 function Register() {
@@ -14,6 +15,8 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [validEmail, setValidEmail] = useState(true);
+
+  const navigate = useNavigate();
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -31,7 +34,23 @@ const handleShowPassword = () => {
 
 const handleRegister = async (ev) => {
     ev.preventDefault();
-    alert('Cadastrado realizado com sucesso! '+name+' '+email+' '+password);
+    try{
+        if(password !== confirmPassword){
+            alert('As senhas devem ser iguais');
+        }
+        const response = await api.post('/admin/register', {
+            name,
+            email,
+            password
+        });
+        if(response.data.token){
+            localStorage.setItem('token', JSON.stringify(response.data.token));
+            localStorage.setItem('id_admin', JSON.stringify(response.data.id_admin));
+            navigate('/appointments');
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
     
 }
 
@@ -67,6 +86,7 @@ const handleRegister = async (ev) => {
                             <Styled.Input type={showPassword ? 'text' : 'password'} placeholder="Confirme sua senha" 
                             onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} 
                             />
+                            {password !== confirmPassword && <p style={{ color: 'red' }}>As senhas devem ser iguais</p>}
                         <Styled.Button type="submit" onClick={handleRegister}>Criar conta</Styled.Button>
                     </Styled.Login>
                 <p>Já tem conta? <Link to="/">Fazer login</Link></p>

@@ -95,5 +95,5 @@ export const LogoContainer = styled.div`
 
 export const LogoImage = styled.img`
     height: auto;
-    width: 15rem;
+    width: 10rem;
 `

@@ -11,7 +11,8 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [valideEmail, setValidEmail] = useState(true);
+    const [validEmail, setValidEmail] = useState(true);
+    const [error, setError] = useState(false);
 
     const navigate = useNavigate();
 
@@ -28,25 +29,29 @@ function Login() {
     const handleShowPassword = () => {
         setShowPassword(!showPassword);
     }
+    
 
     const handleLogin = async (ev) =>{
         ev.preventDefault();
+        localStorage.removeItem('token');
+        localStorage.removeItem('id_user');
         try{
-            const response = await api.post('/users/login', {
+            const response = await api.post('/admin/login', {
                 email,
                 password
             });
-            if(response.data){
-                localStorage.setItem('token', JSON.stringify(response.data.token));
-                localStorage.setItem('id_user', JSON.stringify(response.data.id_user));
+            if(response.data.token){
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('id_admin', response.data.id_admin);
+                api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
                 navigate('/appointments');
             } 
         } catch (error) {
+            setError(true);
             console.log(error.message);
         }
     }
 
-    
     return (
         <Styled.Container>
             <Styled.LoginForm>
@@ -60,9 +65,9 @@ function Login() {
                             <Styled.Input type="email" placeholder="Email" 
                             onChange={handleEmailChange}
                             value={email}
-                            style={{ borderColor: valideEmail ? '' : 'red', borderWidth:'1px', borderStyle:valideEmail?'hidden':'solid' }}
+                            style={{ borderColor: validEmail ? '' : 'red', borderWidth:'1px', borderStyle:validEmail?'hidden':'solid' }}
                             />
-                            {!valideEmail && <p style={{ color: 'red' }} >
+                            {!validEmail && <p style={{ color: 'red' }} >
                                 E-mail inválido
                             </p>}
                         </div>
@@ -76,6 +81,9 @@ function Login() {
                             </span>
                         </div>
                         <Styled.Button type="submit" onClick={handleLogin}>Entrar</Styled.Button>
+                        {error && <div className="alert alert-danger" role="alert">
+                            E-mail e/ou senha errado
+                        </div>}
                     </Styled.Login>
                 <p>Não tem conta? <Link to="/register">Criar conta</Link></p>
             </Styled.LoginForm>

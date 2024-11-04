@@ -2,8 +2,10 @@ import { Link, useParams } from "react-router-dom";
 import Navbar from "../../components/navbar/navbar"
 import { doctors, doctors_services } from "../../constants/mock"
 
+
 function AppoitnmentsAdd() {
     const {id_appointment} = useParams();
+
   return (
     <>
         <Navbar />

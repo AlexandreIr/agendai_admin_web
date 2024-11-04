@@ -1,7 +1,15 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import logo from '../../assets/logo-white.png'
 
 function Navbar() {
+
+    const navigate = useNavigate();
+    const logout = () => {
+        localStorage.removeItem('token')
+        localStorage.removeItem('id_admin')
+        navigate('/')
+    }
+
   return (
     <nav className="navbar fixed-top navbar-expand-lg bg-primary " data-bs-theme="dark">
         <div className="container-fluid">
@@ -31,7 +39,7 @@ function Navbar() {
                             <ul className="dropdown-menu dropdown-menu-end">
                                 <li><Link className="dropdown-item" to="/profile">Meu Perfil</Link></li>
                                 <li><hr className="dropdown-divider" /></li>
-                                <li><Link className="dropdown-item" to="/">Sair</Link></li>
+                                <li><button className="dropdown-item" onClick={logout}>Sair</button></li>
                             </ul>
 
                         </div>
