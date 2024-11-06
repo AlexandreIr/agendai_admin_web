@@ -60,15 +60,23 @@ function Appointments() {
     }
   }
 
-  // const filterApioitmentAPI = async (e) => {
-  //   const response = await api.get(`/admin/appointments`, {
-  //     params: {
-  //       doctor: doctorFilter,
-  //       startDate: dateFilter.startDate,
-  //       endDate: dateFilter.endDate
-  //     }
-  //   });
-  // }
+  //implementação da consulta na API para quando a paginação for necessária 
+
+  const filterApioitmentAPI = async () => {
+    try {
+      const response = await api.get(`/admin/appointments`, {
+        params: {
+          doctor: doctorFilter,
+          startDate: dateFilter.startDate,
+          endDate: dateFilter.endDate
+        }});
+      if(response.data){
+        setFilteredAppointments(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const filterDate = (e) =>{
     const { name, value } = e.target;
