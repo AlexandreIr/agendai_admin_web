@@ -60,13 +60,15 @@ function Appointments() {
     }
   }
 
-  // const handleParameters = (e) => {
-  //   const { value } = e.target;
-  //   if(value != '') 
-  //     setFilteredAppointments(appointments.filter((appointment) => value.includes(appointment.doctor)));
-  //   else
-  //     setFilteredAppointments(appointments);
-  // };
+  // const filterApioitmentAPI = async (e) => {
+  //   const response = await api.get(`/admin/appointments`, {
+  //     params: {
+  //       doctor: doctorFilter,
+  //       startDate: dateFilter.startDate,
+  //       endDate: dateFilter.endDate
+  //     }
+  //   });
+  // }
 
   const filterDate = (e) =>{
     const { name, value } = e.target;
