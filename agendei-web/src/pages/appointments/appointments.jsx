@@ -1,6 +1,6 @@
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import Navbar from "../../components/navbar/navbar.jsx"
-import AppointmentTable from "../../components/navbar/appointmentTable/appointmentTable.jsx";
+import AppointmentTable from "../../components/appointmentTable/appointmentTable.jsx";
 import api from "../../constants/api.js";
 import { useEffect, useState } from "react";
 
@@ -45,8 +45,12 @@ function Appointments() {
     }
   }
 
-  const editAppointment = (id_appointment) => {
-    navigate(`/appointment-edit/${id_appointment}`);
+  const editAppointment = async (id_appointment) => {
+    navigate(`/appointment-edit/${id_appointment}`, {
+      state: {
+        doc: doctors,
+      }
+    });
   }
 
   const deleteAppointment = async (id_appointment) => {
@@ -62,21 +66,22 @@ function Appointments() {
 
   //implementação da consulta na API para quando a paginação for necessária 
 
-  const filterApioitmentAPI = async () => {
-    try {
-      const response = await api.get(`/admin/appointments`, {
-        params: {
-          doctor: doctorFilter,
-          startDate: dateFilter.startDate,
-          endDate: dateFilter.endDate
-        }});
-      if(response.data){
-        setFilteredAppointments(response.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // const filterAppoitmentsAPI = async () => {
+  //   try {
+  //     const response = await api.get(`/admin/appointments`, {
+  //       params: {
+  //         doctor: doctorFilter,
+  //         startDate: dateFilter.startDate,
+  //         endDate: dateFilter.endDate
+  //       }});
+  //     if(response.data){
+  //       setFilteredAppointments(response.data);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
 
   const filterDate = (e) =>{
     const { name, value } = e.target;
@@ -92,6 +97,11 @@ const filterAppointments = () => {
 
     sd = sd.setDate(sd.getDate() + 1);
     ed = ed.setDate(ed.getDate() + 1);
+
+    if(sd>ed){
+      alert(`A data inicial: ${Intl.DateTimeFormat('pt-BR').format(sd)}\ndeve ser menor que a data final: ${Intl.DateTimeFormat('pt-BR').format(ed)}`);
+      return;
+    }
 
     if (doctorFilter!='') {
         filtered = filtered.filter(app => doctorFilter.includes(app.doctor));
@@ -114,6 +124,14 @@ const filterAppointments = () => {
     setFilteredAppointments(filtered);
 };
 
+  const newAppointment = () => {
+    navigate("/appointments/add", {
+      state: {
+        doc: doctors
+      }
+    });
+  }
+
   useEffect(() => {
     loadDoctors();
     loadAppoitments();
@@ -126,9 +144,9 @@ const filterAppointments = () => {
       <div className="d-flex justify-content-between align-items-center">
         <div>
           <h2 className="d-inline me-3">Agendamentos</h2>
-          <Link to="/appointments/add" className="btn btn-outline-primary">
+          <button onClick={newAppointment} className="btn btn-outline-primary">
             Novo Agendamento
-          </Link>
+          </button>
         </div>
         <div className="d-flex gap-3 align-items-center">
           <input type="date" id="startDate" className="form-control" name="startDate" onChange={filterDate} />

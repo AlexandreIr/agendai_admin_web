@@ -1,14 +1,21 @@
 import { Link, useNavigate } from "react-router-dom"
 import logo from '../../assets/logo-white.png'
+import { useState } from "react";
 
 function Navbar() {
-
+    const [active, setActive] = useState('tab1');
     const navigate = useNavigate();
+    
     const logout = () => {
         localStorage.removeItem('token')
         localStorage.removeItem('id_admin')
         navigate('/')
     }
+
+    const handleActive = (tabId) =>{
+        setActive(tabId);
+    }
+    
 
   return (
     <nav className="navbar fixed-top navbar-expand-lg bg-primary " data-bs-theme="dark">
@@ -22,19 +29,19 @@ function Navbar() {
             </button>
 
             <div className="collapse navbar-collapse" id="navbarSuportedContent">
-                <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul className="navbar-nav nav-pills me-auto mb-2 mb-lg-0">
                     <li className="nav-item">
-                        <Link className="nav-link active" to="/appointments" >Agendamentos</Link>
+                        <Link className={`nav-link ${active==='tab1'?'active':''}`} to="/appointments" onClick={()=>handleActive('tab1')}>Agendamentos</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link active" to="/doctors">Médicos</Link>
+                        <Link className={`nav-link ${active==='tab2'?'active':''}`} to="/doctors" onClick={()=>handleActive('tab2')}>Médicos</Link>
                     </li>
                 </ul>
                 <ul className="navbar-nav">
                     <li className="nav-item">
                         <div className="btn-group">
                             <button type="button" className="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                Alexandre Fernandes da Silva
+                                {localStorage.getItem('name')}
                             </button>
                             <ul className="dropdown-menu dropdown-menu-end">
                                 <li><Link className="dropdown-item" to="/profile">Meu Perfil</Link></li>

@@ -3,15 +3,17 @@ import  Login  from "./pages/login/login";
 import Register from "./pages/register/register";
 import Appointments from "./pages/appointments/appointments";
 import AppoitnmentsAdd from "./pages/appointmentsAdd/AppointmentsAdd";
+import Doctors from "./pages/doctors/doctors";
 function Routering() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/appointments" element={<Appointments />} />
-        <Route path="/appointment-edit/:id_appointment" element={<AppoitnmentsAdd />} />
-        <Route path="/appointments/add" element={<AppoitnmentsAdd />} />
+        <Route path="/" element={<Login />} key={1}/>
+        <Route path="/register" element={<Register />} key={2} />
+        <Route path="/appointments" element={<Appointments />} key ={3}/>
+        <Route path="/appointment-edit/:id_appointment" element={<AppoitnmentsAdd />}  key={4}/>
+        <Route path="/appointments/add" element={<AppoitnmentsAdd />} key={5}/>
+        <Route path="/doctors" element={<Doctors />} key={6}/>
       </Routes>
     </BrowserRouter>
   )

@@ -35,6 +35,7 @@ function Login() {
         ev.preventDefault();
         localStorage.removeItem('token');
         localStorage.removeItem('id_user');
+        localStorage.removeItem('name');
         try{
             const response = await api.post('/admin/login', {
                 email,
@@ -43,6 +44,7 @@ function Login() {
             if(response.data.token){
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('id_admin', response.data.id_admin);
+                localStorage.setItem('name', response.data.name);
                 api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
                 navigate('/appointments');
             } 
