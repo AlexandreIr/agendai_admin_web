@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../constants/api";
 import Navbar from "../../components/navbar/navbar";
+import { useNavigate } from "react-router-dom";
 
 function Doctors() {
     const [doctors, setDoctors] = useState([]);
@@ -8,6 +9,7 @@ function Doctors() {
     const [loading, setLoading] = useState(true);
     const [filters, setFilters] = useState({});
     const [filteredDoctors, setFilteredDoctors] = useState([]);
+    const navigate = useNavigate();
 
     const fetchDoctors = async () => {
         try {
@@ -23,7 +25,7 @@ function Doctors() {
     }
 
     const OpenNewDoctor = () => {
-        alert('Você clicou')
+        navigate('/doctor/add');
     }
 
     const SelectSpecialty = () => {
@@ -33,7 +35,7 @@ function Doctors() {
                 specialties.push(doctor.specialty);
             }
         })
-        setSpecialty(specialties);
+        setSpecialty(specialties.sort());
     }
 
     const DefineFilters = (e) =>{
@@ -43,19 +45,25 @@ function Doctors() {
 
     const HandleFilters = () =>{
         let filtered = [...doctors];
-        if(filters.specialty!=''){
+        if(filters.specialty){
             filtered = filtered.filter(doctor => doctor.specialty === filters.specialty);
         }
-        if(filters.name!=''){
-            filtered = filtered.filter(doctor => doctor.name.includes(filters.name));
+        if(filters.name){
+            filtered = filtered.filter(doctor => doctor.name.toLowerCase().includes(filters.name.toLowerCase()));
         }
         setFilteredDoctors(filtered);
     }
 
-    const HandleDelete = async () =>{
-        const response = await api.delete('/doctors?=name');
-        if(response.data){
-            setDoctors(doctors.filter(doctor => doctor.name !== name));
+    const HandleDelete = async (id_doctor) =>{
+        if(window.confirm('Tem certeza que deseja excluir o médico?')){
+            try{
+                const response = await api.delete(`/doctors/${id_doctor}`);
+                if(response.data){
+                    setFilteredDoctors(doctors.filter(doctor => doctor.id_doctor != id_doctor));
+                }
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 
@@ -101,14 +109,14 @@ function Doctors() {
             <tbody>
         {filteredDoctors.map(doctor => {
             return (
-            <tr key={doctor.id}>
+            <tr key={doctor.id_doctor}>
                 <td>{doctor.name}</td>
                     <td>{doctor.specialty}</td>
                         <td className="col-buttons ps-5 d-flex gap-2 justify-content-end ">
                             <button className="btn btn-primary">
                                 <i className="bi bi-pencil-square"></i>
                             </button>
-                            <button className="btn btn-danger" onClick={HandleDelete(doctor.name)}>
+                            <button className="btn btn-danger" onClick={() => HandleDelete(doctor.id_doctor)}>
                                 <i className="bi bi-trash3"></i>
                             </button>
                         </td>
