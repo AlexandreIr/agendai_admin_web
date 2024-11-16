@@ -67,6 +67,14 @@ function Doctors() {
         }
     }
 
+    const HandleEdit = (id_doctor) => {
+        navigate(`/doctor-edit/${id_doctor}`, {
+            state: {
+                doctors
+            }
+        });
+    }
+
     useEffect( () => {
         fetchDoctors();
     }, []);
@@ -113,7 +121,7 @@ function Doctors() {
                 <td>{doctor.name}</td>
                     <td>{doctor.specialty}</td>
                         <td className="col-buttons ps-5 d-flex gap-2 justify-content-end ">
-                            <button className="btn btn-primary">
+                            <button className="btn btn-primary" onClick={()=>HandleEdit(doctor.id_doctor)}>
                                 <i className="bi bi-pencil-square"></i>
                             </button>
                             <button className="btn btn-danger" onClick={() => HandleDelete(doctor.id_doctor)}>

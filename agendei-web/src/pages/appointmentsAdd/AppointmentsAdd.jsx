@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 function AppoitnmentsAdd() {
     const {id_appointment} = useParams();
     const location = useLocation();
-    const currentUrl = location.pathname
+    const currentUrl = location.pathname;
     const {doc} = location.state;
     const [services, setServices] = useState([]);	
     const [appointment, setAppointment] = useState({})
