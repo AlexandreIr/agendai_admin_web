@@ -1,10 +1,11 @@
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import logo from '../../assets/logo-white.png'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Navbar() {
-    const [active, setActive] = useState('tab1');
+    const [active, setActive] = useState('');
     const navigate = useNavigate();
+    const location = useLocation();
     
     const logout = () => {
         localStorage.removeItem('token')
@@ -12,9 +13,14 @@ function Navbar() {
         navigate('/')
     }
 
-    const handleActive = (tabId) =>{
-        setActive(tabId);
+    const handleActive = () =>{
+        const pathName = location.pathname;
+        setActive(pathName);
     }
+
+    useEffect(() => {
+        handleActive();
+    }, []);
     
 
   return (
@@ -31,10 +37,13 @@ function Navbar() {
             <div className="collapse navbar-collapse" id="navbarSuportedContent">
                 <ul className="navbar-nav nav-pills me-auto mb-2 mb-lg-0">
                     <li className="nav-item">
-                        <Link className={`nav-link ${active==='tab1'?'active':''}`} to="/appointments" onClick={()=>handleActive('tab1')}>Agendamentos</Link>
+                        <Link className={`nav-link ${active==='/appointments'?'active':''}`} to="/appointments" onClick={()=>handleActive('tab1')}>Agendamentos</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className={`nav-link ${active==='tab2'?'active':''}`} to="/doctors" onClick={()=>handleActive('tab2')}>Médicos</Link>
+                        <Link className={`nav-link ${active==='/doctors'?'active':''}`} to="/doctors" onClick={()=>handleActive('tab2')}>Médicos</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className={`nav-link ${active==='/patients'?'active':''}`} to="/patients" onClick={()=>handleActive('tab3')}>Pacientes</Link>
                     </li>
                 </ul>
                 <ul className="navbar-nav">

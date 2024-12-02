@@ -17,7 +17,7 @@ function DoctorsAdd() {
 
     const handleDocotorInfo = (e) => {
         const {name, value} = e.target;
-        setDocotorInfo({...doctorInfo, [name]: value.trim()});
+        setDocotorInfo({...doctorInfo, [name]: value});
     }
 
     const fetchDoctor = async (id_doctor) => {

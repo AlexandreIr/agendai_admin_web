@@ -17,7 +17,7 @@ function AppointmentTable(props) {
                     <button className="btn btn-primary" onClick={() => props.editAppointment(props.id_appointment)}>
                         <i className="bi bi-pencil-square"></i>
                     </button>
-                    <button className="btn btn-danger" onClick={() => props.deleteAppointment(props.id_appointment)}>
+                    <button className="btn btn-outline-danger" onClick={() => props.deleteAppointment(props.id_appointment)}>
                         <i className="bi bi-trash3"></i>
                     </button>
                             </td>

@@ -124,7 +124,7 @@ function Doctors() {
                             <button className="btn btn-primary" onClick={()=>HandleEdit(doctor.id_doctor)}>
                                 <i className="bi bi-pencil-square"></i>
                             </button>
-                            <button className="btn btn-danger" onClick={() => HandleDelete(doctor.id_doctor)}>
+                            <button className="btn btn-outline-danger" onClick={() => HandleDelete(doctor.id_doctor)}>
                                 <i className="bi bi-trash3"></i>
                             </button>
                         </td>

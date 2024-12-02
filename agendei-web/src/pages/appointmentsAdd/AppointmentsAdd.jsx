@@ -11,6 +11,7 @@ function AppoitnmentsAdd() {
     const {doc} = location.state;
     const [services, setServices] = useState([]);	
     const [appointment, setAppointment] = useState({})
+    const [patients, setPatients] = useState([]);
 
     const fetchServices = async (e) => {
         const {value} = e.target
@@ -36,6 +37,15 @@ function AppoitnmentsAdd() {
             }
         }
     };
+
+    const fetchPatients = async() =>{
+        try {
+            const response = await api.get('/admin/users');
+            setPatients(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
     
 
     const handleSelectedValue = (e) => {
@@ -44,10 +54,25 @@ function AppoitnmentsAdd() {
         if(name === "id_doctor") fetchServices(e)
     }
 
+    const scheduleAppointment = async (e) => {
+        e.preventDefault();
+        try {
+            if (id_appointment) {
+                await api.put(`/appointment/${id_appointment}`, appointment);
+                alert('Agendamento atualizado com sucesso');
+            } else {
+                await api.post('/appointments', appointment);
+                alert
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
     
 
     useEffect(() => {
         fetchAppointment(currentUrl.match(/\d+/g));
+        fetchPatients();
     }, []);
     
 
@@ -58,6 +83,21 @@ function AppoitnmentsAdd() {
             <div className="row col-lg-5 offset-lg-4">
                 <div className="col-12 mt-2">
                     <h2>{id_appointment ? "Editar agendamento" : "Novo agendamento"}</h2>
+                </div>
+
+                <div className="col-12 mt-2">
+                    <label htmlFor="id_user">Paciente</label>
+                    <div className="form-control">
+                        <select name="id_user" id="id_user" 
+                        value={patients.id_user?patients.id_user:''} 
+                        onChange={handleSelectedValue}>
+                            {patients.map((patient) => (
+                            <option key={patient.id_user} value={patient.id_user}>
+                                {patient.name}
+                            </option>
+                            ))} 
+                        </select>
+                </div>
                 </div>
 
                 <div className="col-12 mt-2">
@@ -119,7 +159,7 @@ function AppoitnmentsAdd() {
                         <Link to={"/appointments"} className="btn btn-outline-danger me-3">
                             Cancelar
                         </Link>
-                        <button className="btn btn-primary ms-2" onClick={()=>console.log(appointment)}>
+                        <button className="btn btn-primary ms-2" onClick={scheduleAppointment}>
                             Agendar
                         </button>
                     </div>
